@@ -1,5 +1,6 @@
 package com.kirtika.slotsync.service;
 
+import com.kirtika.slotsync.dto.LoginRequest;
 import com.kirtika.slotsync.dto.SignupRequest;
 import com.kirtika.slotsync.model.User;
 import com.kirtika.slotsync.repository.UserRepository;
@@ -28,5 +29,20 @@ public class UserService {
 
         String hash = passwordEncoder.encode(request.password());
         return userRepository.save(new User(request.name().trim(), email, hash));
+    }
+
+    public User authenticate(LoginRequest request) {
+        String email = request.email().trim().toLowerCase();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Invalid email or password"));
+
+        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        }
+
+        return user;
     }
 }
