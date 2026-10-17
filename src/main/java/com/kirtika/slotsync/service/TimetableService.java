@@ -28,9 +28,9 @@ import java.util.Map;
 @Service
 public class TimetableService {
 
-    private static final LocalTime DAY_START = LocalTime.of(8, 0);
-    private static final LocalTime DAY_END = LocalTime.of(20, 0);
-    private static final List<DayOfWeek> WEEKDAYS = List.of(
+    static final LocalTime DAY_START = LocalTime.of(8, 0);
+    static final LocalTime DAY_END = LocalTime.of(20, 0);
+    static final List<DayOfWeek> WEEKDAYS = List.of(
             DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
             DayOfWeek.THURSDAY, DayOfWeek.FRIDAY);
 

@@ -1,16 +1,20 @@
 package com.kirtika.slotsync.controller;
 
 import com.kirtika.slotsync.dto.CreateGroupRequest;
+import com.kirtika.slotsync.dto.GroupFreeTimeResponse;
 import com.kirtika.slotsync.dto.GroupResponse;
 import com.kirtika.slotsync.dto.JoinGroupRequest;
+import com.kirtika.slotsync.service.GroupFreeTimeService;
 import com.kirtika.slotsync.service.GroupService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +25,12 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
+    private final GroupFreeTimeService groupFreeTimeService;
 
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService,
+                           GroupFreeTimeService groupFreeTimeService) {
         this.groupService = groupService;
+        this.groupFreeTimeService = groupFreeTimeService;
     }
 
     @PostMapping
@@ -42,5 +49,12 @@ public class GroupController {
     @GetMapping
     public List<GroupResponse> myGroups(Authentication authentication) {
         return groupService.listForUser(authentication.getName());
+    }
+
+    @GetMapping("/{id}/free-time")
+    public GroupFreeTimeResponse freeTime(@PathVariable Long id,
+                                          @RequestParam(defaultValue = "60") int minMinutes,
+                                          Authentication authentication) {
+        return groupFreeTimeService.getFreeTime(authentication.getName(), id, minMinutes);
     }
 }
