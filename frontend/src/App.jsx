@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './AuthContext.js'
 import AuthPage from './AuthPage.jsx'
-import Home from './Home.jsx'
+import Courses from './Courses.jsx'
+import Layout from './Layout.jsx'
 
 function RequireAuth({ children }) {
   const { user } = useAuth()
@@ -14,14 +15,15 @@ export default function App() {
       <Route path="/login" element={<AuthPage mode="login" />} />
       <Route path="/signup" element={<AuthPage mode="signup" />} />
       <Route
-        path="/"
         element={
           <RequireAuth>
-            <Home />
+            <Layout />
           </RequireAuth>
         }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      >
+        <Route path="/courses" element={<Courses />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/courses" replace />} />
     </Routes>
   )
 }
