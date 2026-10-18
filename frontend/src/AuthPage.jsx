@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from './AuthContext.js'
+import Logo from './Logo.jsx'
 
 export default function AuthPage({ mode }) {
   const isSignup = mode === 'signup'
@@ -38,10 +39,18 @@ export default function AuthPage({ mode }) {
   return (
     <main className="auth-page">
       <form className="card" onSubmit={handleSubmit}>
-        <h1>SlotSync</h1>
-        <p className="subtitle">
-          {isSignup ? 'Create your account' : 'Log in to see your timetable'}
-        </p>
+                <div className="auth-brand">
+          <span className="wordmark">
+            <Logo size={32} />
+            SlotSync
+          </span>
+          <h1>Find the hour everyone is free.</h1>
+          <p className="subtitle">
+            {isSignup
+              ? 'Create an account to add your courses.'
+              : 'Log in to see your timetable and groups.'}
+          </p>
+        </div>
 
         {isSignup && (
           <label>
