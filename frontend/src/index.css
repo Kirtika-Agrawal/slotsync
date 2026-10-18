@@ -486,3 +486,152 @@ code {
     transition: none !important;
   }
 }
+/* Week grid */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.swatch {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+}
+
+.swatch.theory {
+  background: var(--ink);
+}
+
+.swatch.lab {
+  background: var(--lab);
+}
+
+.swatch.free {
+  background: var(--marker);
+}
+
+.grid-scroll {
+  overflow-x: auto;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.grid-scroll.loading {
+  opacity: 0.6;
+}
+
+.week-grid {
+  --hour: 3.5rem;
+  min-width: 680px;
+  display: grid;
+  grid-template-columns: 3.25rem repeat(5, minmax(0, 1fr));
+}
+
+.axis-head,
+.day-head {
+  border-bottom: 2px solid var(--ink);
+}
+
+.day-head {
+  margin: 0;
+  padding: 0.6rem 0.5rem;
+  border-left: 1px solid var(--line);
+  font-size: 1.15rem;
+}
+
+.axis {
+  position: relative;
+  height: calc(var(--hour) * 12);
+}
+
+.hour-label {
+  position: absolute;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hour-label:first-child {
+  transform: none;
+  margin-top: 0.3rem;
+}
+
+.day-body {
+  position: relative;
+  height: calc(var(--hour) * 12);
+  border-left: 1px solid var(--line);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--hour) - 1px),
+    var(--line) calc(var(--hour) - 1px),
+    var(--line) var(--hour)
+  );
+}
+
+.free-block {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  padding: 0.25rem 0.45rem;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--marker);
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.class-block {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0.4rem;
+  overflow: hidden;
+  border-radius: 4px;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+.class-block.theory {
+  background: var(--ink);
+}
+
+.class-block.lab {
+  background: var(--lab);
+}
+
+.class-block strong {
+  overflow: hidden;
+  font-family: var(--font-head);
+  font-stretch: 75%;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.class-block span {
+  overflow: hidden;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

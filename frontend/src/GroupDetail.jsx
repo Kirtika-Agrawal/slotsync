@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from './api.js'
 import { formatDay, formatTime, toMinutes } from './format.js'
+import WeekGrid from './WeekGrid.jsx'
 
 const MIN_OPTIONS = [30, 45, 60, 90, 120]
 
@@ -107,24 +108,7 @@ export default function GroupDetail() {
               </label>
             </div>
 
-            <div className={loading ? 'week loading' : 'week'}>
-              {data.days.map((day) => (
-                <section key={day.day} className="day">
-                  <h2>{formatDay(day.day)}</h2>
-                  {day.freeWindows.length === 0 ? (
-                    <p className="muted small">No shared gap</p>
-                  ) : (
-                    day.freeWindows.map((window) => (
-                      <div key={window.start} className="block free">
-                        <div className="block-time">
-                          {formatTime(window.start)} – {formatTime(window.end)}
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </section>
-              ))}
-            </div>
+            <WeekGrid days={data.days} loading={loading} freeLabel="Everyone is free" />
           </>
         )
       )}

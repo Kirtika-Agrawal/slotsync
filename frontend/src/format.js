@@ -17,3 +17,10 @@ export function toMinutes(time) {
   const [hour, minute] = time.split(':').map(Number)
   return hour * 60 + minute
 }
+
+// "14:30:00" becomes "2:30"
+export function formatShort(time) {
+  const [hourText, minute] = time.split(':')
+  const hour = Number(hourText) % 12 || 12
+  return `${hour}:${minute}`
+}

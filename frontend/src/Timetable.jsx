@@ -1,29 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from './api.js'
-import { formatDay, formatTime } from './format.js'
+import WeekGrid from './WeekGrid.jsx'
 
 const MIN_OPTIONS = [30, 45, 60, 90, 120]
-
-
-// Mixes classes and free gaps into one list, in time order
-function buildItems(day) {
-  const classes = day.classes.map((c) => ({
-    kind: 'class',
-    start: c.start,
-    end: c.end,
-    label: c.courseCode,
-    detail: `Slot ${c.slot}`,
-  }))
-  const free = day.freeWindows.map((w) => ({
-    kind: 'free',
-    start: w.start,
-    end: w.end,
-    label: 'Free',
-    detail: '',
-  }))
-  return [...classes, ...free].sort((a, b) => a.start.localeCompare(b.start))
-}
 
 export default function Timetable() {
   const [minMinutes, setMinMinutes] = useState(60)
@@ -52,7 +32,6 @@ export default function Timetable() {
         }
       })
 
-    // If the dropdown changes before this request finishes, ignore the old answer
     return () => {
       cancelled = true
     }
@@ -69,7 +48,8 @@ export default function Timetable() {
     <>
       <h1>My timetable</h1>
       <p className="muted">
-        Your classes (blue) and the gaps between them (green). Shorter gaps are hidden.
+        Each class sits at its real time of day. Yellow marks your free gaps, and gaps
+        shorter than the minimum are hidden.
       </p>
 
       <div className="controls">
@@ -91,35 +71,16 @@ export default function Timetable() {
         </p>
       )}
 
-      {loading && days.length === 0 ? (
-        <p className="muted">Loading...</p>
-      ) : (
-        <>
-          {!loading && !error && !hasClasses && (
-            <p className="muted">
-              You have no classes yet. <Link to="/courses">Add your courses</Link> to see
-              your week.
-            </p>
-          )}
+      {loading && days.length === 0 && <p className="muted">Loading...</p>}
 
-          <div className={loading ? 'week loading' : 'week'}>
-            {days.map((day) => (
-              <section key={day.day} className="day">
-                <h2>{formatDay(day.day)}</h2>
-                {buildItems(day).map((item, index) => (
-                  <div key={`${item.kind}-${item.start}-${index}`} className={`block ${item.kind}`}>
-                    <div className="block-time">
-                      {formatTime(item.start)} – {formatTime(item.end)}
-                    </div>
-                    <div className="block-label">{item.label}</div>
-                    {item.detail && <div className="block-detail">{item.detail}</div>}
-                  </div>
-                ))}
-              </section>
-            ))}
-          </div>
-        </>
+      {!loading && !error && days.length > 0 && !hasClasses && (
+        <p className="muted">
+          You have no classes yet. <Link to="/courses">Add your courses</Link> to see your
+          week.
+        </p>
       )}
+
+      {days.length > 0 && <WeekGrid days={days} loading={loading} freeLabel="Free" />}
     </>
   )
 }
