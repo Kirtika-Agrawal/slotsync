@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -56,5 +57,10 @@ public class GroupController {
                                           @RequestParam(defaultValue = "60") int minMinutes,
                                           Authentication authentication) {
         return groupFreeTimeService.getFreeTime(authentication.getName(), id, minMinutes);
+    }
+    @DeleteMapping("/{id}/membership")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void leave(@PathVariable Long id, Authentication authentication) {
+        groupService.leave(authentication.getName(), id);
     }
 }

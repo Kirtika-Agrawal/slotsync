@@ -75,6 +75,27 @@ public class GroupService {
                 .toList();
     }
 
+    @Transactional
+    public void leave(String email, Long groupId) {
+        User user = getUser(email);
+
+        StudyGroup group = studyGroupRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Group not found"));
+
+        GroupMember membership = groupMemberRepository.findByStudyGroupAndUser(group, user)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Group not found"));
+
+        groupMemberRepository.delete(membership);
+        groupMemberRepository.flush();
+
+        // Nobody left? Remove the empty group too
+        if (groupMemberRepository.countByStudyGroup(group) == 0) {
+            studyGroupRepository.delete(group);
+        }
+    }
+
     private String generateUniqueCode() {
         String code;
         do {

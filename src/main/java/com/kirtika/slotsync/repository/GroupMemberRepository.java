@@ -6,6 +6,7 @@ import com.kirtika.slotsync.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> {
 
@@ -16,4 +17,6 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
     List<GroupMember> findByUserOrderByIdAsc(User user);
 
     List<GroupMember> findByStudyGroup(StudyGroup studyGroup);
+
+    Optional<GroupMember> findByStudyGroupAndUser(StudyGroup studyGroup, User user);
 }
