@@ -11,6 +11,7 @@ export default function Layout() {
           <strong>SlotSync</strong>
           <nav>
             <NavLink to="/courses">Courses</NavLink>
+            <NavLink to="/timetable">Timetable</NavLink>
           </nav>
         </div>
         <div className="user-area">
