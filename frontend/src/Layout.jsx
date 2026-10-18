@@ -12,6 +12,7 @@ export default function Layout() {
           <nav>
             <NavLink to="/courses">Courses</NavLink>
             <NavLink to="/timetable">Timetable</NavLink>
+            <NavLink to="/groups">Groups</NavLink>
           </nav>
         </div>
         <div className="user-area">

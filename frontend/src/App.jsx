@@ -4,6 +4,8 @@ import AuthPage from './AuthPage.jsx'
 import Courses from './Courses.jsx'
 import Layout from './Layout.jsx'
 import Timetable from './Timetable.jsx'
+import GroupDetail from './GroupDetail.jsx'
+import Groups from './Groups.jsx'
 
 function RequireAuth({ children }) {
   const { user } = useAuth()
@@ -24,6 +26,8 @@ export default function App() {
       >
         <Route path="/courses" element={<Courses />} />
         <Route path="/timetable" element={<Timetable />} />
+        <Route path="/groups" element={<Groups />} />
+        <Route path="/groups/:id" element={<GroupDetail />} />
       </Route>
       <Route path="*" element={<Navigate to="/courses" replace />} />
     </Routes>

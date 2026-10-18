@@ -1,22 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from './api.js'
+import { formatDay, formatTime } from './format.js'
 
 const MIN_OPTIONS = [30, 45, 60, 90, 120]
 
-// "14:00:00" becomes "2:00 PM"
-function formatTime(time) {
-  const [hourText, minute] = time.split(':')
-  const hour = Number(hourText)
-  const suffix = hour >= 12 ? 'PM' : 'AM'
-  const hour12 = hour % 12 === 0 ? 12 : hour % 12
-  return `${hour12}:${minute} ${suffix}`
-}
-
-// "MONDAY" becomes "Monday"
-function formatDay(day) {
-  return day.charAt(0) + day.slice(1).toLowerCase()
-}
 
 // Mixes classes and free gaps into one list, in time order
 function buildItems(day) {

@@ -284,3 +284,95 @@ select {
 .block-detail {
   color: var(--muted);
 }
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.two-col .card.wide {
+  margin: 0;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.code-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+code {
+  background: #eef0ff;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.link-button:hover:not(:disabled) {
+  background: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.button-link {
+  display: inline-block;
+  text-align: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.button-link:hover {
+  background: var(--primary-dark);
+}
+
+.warning {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: #fff6e5;
+  color: #8a5a00;
+  font-size: 0.9rem;
+}
+
+.best {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  background: #e9f7ef;
+  color: #14633a;
+}
+
+.small {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+button.secondary:hover:not(:disabled) {
+  background: #eef0ff;
+}
