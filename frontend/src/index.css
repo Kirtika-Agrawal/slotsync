@@ -541,21 +541,31 @@ code {
   grid-template-columns: 3.25rem repeat(5, minmax(0, 1fr));
 }
 
-.axis-head,
-.day-head {
+/* The hour axis stays pinned on the left while the days scroll */
+
+.axis-head {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #ffffff;
   border-bottom: 2px solid var(--ink);
+}
+
+.axis {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  height: calc(var(--hour) * 12);
+  background: #ffffff;
+  border-right: 1px solid var(--line);
 }
 
 .day-head {
   margin: 0;
   padding: 0.6rem 0.5rem;
+  border-bottom: 2px solid var(--ink);
   border-left: 1px solid var(--line);
   font-size: 1.15rem;
-}
-
-.axis {
-  position: relative;
-  height: calc(var(--hour) * 12);
 }
 
 .hour-label {
@@ -563,9 +573,11 @@ code {
   right: 0.4rem;
   transform: translateY(-50%);
   color: var(--muted);
-  font-size: 0.75rem;
+  font-family: var(--font-head);
+  font-stretch: 85%;
+  font-weight: 600;
+  font-size: 0.8rem;
   line-height: 1;
-  font-variant-numeric: tabular-nums;
 }
 
 .hour-label:first-child {
@@ -595,8 +607,10 @@ code {
   border-radius: 4px;
   background: var(--marker);
   color: var(--ink);
-  font-size: 0.78rem;
+  font-family: var(--font-head);
+  font-stretch: 85%;
   font-weight: 700;
+  font-size: 0.85rem;
   line-height: 1.15;
 }
 
@@ -631,7 +645,10 @@ code {
 
 .class-block span {
   overflow: hidden;
-  font-size: 0.72rem;
+  font-family: var(--font-head);
+  font-stretch: 90%;
+  font-weight: 500;
+  font-size: 0.78rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

@@ -4,7 +4,7 @@ export function formatTime(time) {
   const hour = Number(hourText)
   const suffix = hour >= 12 ? 'PM' : 'AM'
   const hour12 = hour % 12 === 0 ? 12 : hour % 12
-  return `${hour12}:${minute} ${suffix}`
+  return `${hour12}:${minute}\u00A0${suffix}`
 }
 
 // "MONDAY" becomes "Monday"
