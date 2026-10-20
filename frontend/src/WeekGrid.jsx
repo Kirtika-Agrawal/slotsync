@@ -117,16 +117,20 @@ export default function WeekGrid({ days, loading = false, freeLabel = 'Free' }) 
             ))}
           </div>
 
-          {days.map((day) => (
+          {days.map((day, dayIndex) => (
             <div key={day.day} className="day-body">
-              {day.freeWindows.map((window) => {
+              {day.freeWindows.map((window, index) => {
                 const top = percent(toMinutes(window.start))
                 const height = percent(toMinutes(window.end)) - top
                 return (
                   <div
                     key={`free-${window.start}`}
                     className="free-block"
-                    style={{ top: `${top}%`, height: `${height}%` }}
+                    style={{
+                      top: `${top}%`,
+                      height: `${height}%`,
+                      '--delay': `${dayIndex * 70 + index * 40}ms`,
+                    }}
                     title={`${freeLabel}: ${formatTime(window.start)} – ${formatTime(window.end)}`}
                   >
                     {formatTime(window.start)} – {formatTime(window.end)}
@@ -134,7 +138,7 @@ export default function WeekGrid({ days, loading = false, freeLabel = 'Free' }) 
                 )
               })}
 
-              {layoutLanes(day.classes ?? []).map((block) => {
+              {layoutLanes(day.classes ?? []).map((block, index) => {
                 const top = percent(block.startMin)
                 const height = percent(block.endMin) - top
                 return (
@@ -146,6 +150,7 @@ export default function WeekGrid({ days, loading = false, freeLabel = 'Free' }) 
                       height: `${height}%`,
                       left: `calc(${(block.lane / block.lanes) * 100}% + 2px)`,
                       width: `calc(${100 / block.lanes}% - 4px)`,
+                      '--delay': `${dayIndex * 70 + index * 40}ms`,
                     }}
                     title={`${block.code} (${block.slot}), ${formatTime(block.start)} – ${formatTime(block.end)}`}
                   >

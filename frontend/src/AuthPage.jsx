@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from './AuthContext.js'
+import HeroGrid from './HeroGrid.jsx'
 import Logo from './Logo.jsx'
 
 export default function AuthPage({ mode }) {
@@ -37,71 +38,80 @@ export default function AuthPage({ mode }) {
   }
 
   return (
-    <main className="auth-page">
-      <form className="card" onSubmit={handleSubmit}>
-                <div className="auth-brand">
-          <span className="wordmark">
-            <Logo size={32} />
-            SlotSync
-          </span>
-          <h1>Find the hour everyone is free.</h1>
+    <main className="auth-split">
+      <section className="auth-hero">
+        <span className="wordmark on-dark">
+          <Logo size={32} inverted />
+          SlotSync
+        </span>
+        <h1>Find the hour everyone is free.</h1>
+        <p>
+          Add your VIT slots once. SlotSync turns them into a weekly timetable and shows
+          when your whole study group is free.
+        </p>
+        <HeroGrid />
+      </section>
+
+      <section className="auth-panel">
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <h2>{isSignup ? 'Create your account' : 'Welcome back'}</h2>
           <p className="subtitle">
             {isSignup
-              ? 'Create an account to add your courses.'
+              ? 'It takes a minute. Then add your courses.'
               : 'Log in to see your timetable and groups.'}
           </p>
-        </div>
 
-        {isSignup && (
-          <label>
-            Name
-            <input value={name} onChange={(e) => setName(e.target.value)} required />
-          </label>
-        )}
-
-        <label>
-          Email
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={isSignup ? 8 : undefined}
-            required
-          />
-        </label>
-
-        {error && (
-          <p className="error" role="alert">
-            {error}
-          </p>
-        )}
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Please wait...' : isSignup ? 'Sign up' : 'Log in'}
-        </button>
-
-        <p className="switch">
-          {isSignup ? (
-            <>
-              Already have an account? <Link to="/login">Log in</Link>
-            </>
-          ) : (
-            <>
-              New here? <Link to="/signup">Create an account</Link>
-            </>
+          {isSignup && (
+            <label>
+              Name
+              <input value={name} onChange={(e) => setName(e.target.value)} required />
+            </label>
           )}
-        </p>
-      </form>
+
+          <label>
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={isSignup ? 8 : undefined}
+              required
+            />
+          </label>
+
+          {error && (
+            <p className="error" role="alert">
+              {error}
+            </p>
+          )}
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Please wait...' : isSignup ? 'Sign up' : 'Log in'}
+          </button>
+
+          <p className="switch">
+            {isSignup ? (
+              <>
+                Already have an account? <Link to="/login">Log in</Link>
+              </>
+            ) : (
+              <>
+                New here? <Link to="/signup">Create an account</Link>
+              </>
+            )}
+          </p>
+        </form>
+      </section>
     </main>
   )
 }

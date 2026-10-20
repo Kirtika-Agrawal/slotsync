@@ -126,20 +126,34 @@ a:hover {
 }
 
 .topbar a {
+  position: relative;
   padding: 0.35rem 0;
   color: var(--muted);
   text-decoration: none;
-  border-bottom: 4px solid transparent;
 }
 
-.topbar a:hover {
+.topbar a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  background: var(--marker);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.topbar a:hover,
+.topbar a.active {
   color: var(--ink);
   background: none;
 }
 
-.topbar a.active {
-  color: var(--ink);
-  border-bottom-color: var(--marker);
+.topbar a:hover::after,
+.topbar a.active::after {
+  transform: scaleX(1);
 }
 
 .user-area {
@@ -651,4 +665,184 @@ code {
   font-size: 0.78rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+
+/* Motion */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reveals a block from left to right, like a highlighter stroke */
+@keyframes sweep {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.page-enter {
+  animation: rise 0.35s var(--ease-out) both;
+}
+
+button {
+  transition:
+    background 0.15s,
+    transform 0.1s var(--ease-out);
+}
+
+button:active:not(:disabled),
+.button-link:active {
+  transform: translateY(1px);
+}
+
+.class-block {
+  animation: settle 0.45s var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.free-block {
+  animation: sweep 0.7s var(--ease-out) both;
+  animation-delay: calc(var(--delay, 0ms) + 250ms);
+}
+
+/* Login and signup: split screen */
+
+.auth-split {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+}
+
+.auth-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.wordmark.on-dark {
+  color: var(--paper);
+}
+
+.auth-hero h1 {
+  max-width: 14ch;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+}
+
+.auth-hero p {
+  max-width: 42ch;
+  margin: 0;
+  color: #c9cce0;
+  font-size: 1.05rem;
+}
+
+.hero-grid {
+  height: clamp(220px, 38vh, 360px);
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.hero-col {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(100% / 12 - 1px),
+    rgba(255, 255, 255, 0.12) calc(100% / 12 - 1px),
+    rgba(255, 255, 255, 0.12) calc(100% / 12)
+  );
+}
+
+.hero-seg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+}
+
+.hero-seg.theory {
+  background: #fafaf7;
+  animation: settle 0.5s var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.hero-seg.lab {
+  background: #2cb3a5;
+  animation: settle 0.5s var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.hero-seg.free {
+  background: var(--marker);
+  animation: sweep 0.8s var(--ease-out) both;
+  animation-delay: calc(var(--delay, 0ms) + 300ms);
+}
+
+.auth-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form h2 {
+  font-size: 2.1rem;
+}
+
+@media (max-width: 860px) {
+  .auth-split {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid {
+    height: 180px;
+  }
+}
+
+/* Anyone who turned animations off in their system settings sees none */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
