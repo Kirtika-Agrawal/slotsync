@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from './api.js'
+import { ListSkeleton } from './Skeleton.jsx'
 
 export default function Groups() {
   const [groups, setGroups] = useState([])
@@ -92,90 +93,100 @@ export default function Groups() {
         only free times, never each other&apos;s courses.
       </p>
 
-      <div className="two-col">
-        <form className="card wide" onSubmit={handleCreate}>
-          <h2>Create a group</h2>
-          <label>
-            Group name
-            <input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              placeholder="DBMS Study"
-              maxLength={100}
-              required
-            />
-          </label>
-          {createError && (
-            <p className="error" role="alert">
-              {createError}
-            </p>
-          )}
-          <button type="submit" disabled={creating}>
-            {creating ? 'Creating...' : 'Create group'}
-          </button>
-        </form>
+      <div className="split">
+        <div className="side-stack">
+          <form className="card" onSubmit={handleCreate}>
+            <h2>Create a group</h2>
+            <label>
+              Group name
+              <input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                placeholder="DBMS Study"
+                maxLength={100}
+                required
+              />
+            </label>
+            {createError && (
+              <p className="error" role="alert">
+                {createError}
+              </p>
+            )}
+            <button type="submit" disabled={creating}>
+              {creating ? 'Creating...' : 'Create group'}
+            </button>
+          </form>
 
-        <form className="card wide" onSubmit={handleJoin}>
-          <h2>Join with a code</h2>
-          <label>
-            Invite code
-            <input
-              value={inviteCode}
-              onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-              placeholder="ABC234"
-              maxLength={12}
-              required
-            />
-          </label>
-          {joinError && (
+          <form className="card" onSubmit={handleJoin}>
+            <h2>Join with a code</h2>
+            <label>
+              Invite code
+              <input
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                placeholder="ABC234"
+                maxLength={12}
+                required
+              />
+            </label>
+            {joinError && (
+              <p className="error" role="alert">
+                {joinError}
+              </p>
+            )}
+            <button type="submit" disabled={joining}>
+              {joining ? 'Joining...' : 'Join group'}
+            </button>
+          </form>
+        </div>
+
+        <section aria-label="Your groups">
+          {listError && (
             <p className="error" role="alert">
-              {joinError}
+              {listError}
             </p>
           )}
-          <button type="submit" disabled={joining}>
-            {joining ? 'Joining...' : 'Join group'}
-          </button>
-        </form>
+
+          {loading ? (
+            <ListSkeleton />
+          ) : groups.length === 0 ? (
+            <p className="empty">
+              You are not in any groups yet. Create one, or join with a code from a friend.
+            </p>
+          ) : (
+            <ul className="course-list">
+              {groups.map((group) => (
+                <li key={group.id} className="course">
+                  <div>
+                    <strong>{group.name}</strong>
+                    <div className="muted">
+                      {group.memberCount} {group.memberCount === 1 ? 'member' : 'members'}
+                    </div>
+                    <div className="code-row">
+                      Invite code: <code>{group.inviteCode}</code>
+                      <button
+                        type="button"
+                        className="link-button"
+                        onClick={() => copyCode(group)}
+                      >
+                        {copiedId === group.id ? 'Copied!' : 'Copy'}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="actions">
+                    <Link className="button-link" to={`/groups/${group.id}`}>
+                      View free time
+                    </Link>
+                    <button className="secondary danger" onClick={() => handleLeave(group)}>
+                      Leave
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
-
-      {listError && (
-        <p className="error" role="alert">
-          {listError}
-        </p>
-      )}
-
-      {loading ? (
-        <p className="muted">Loading...</p>
-      ) : groups.length === 0 ? (
-        <p className="muted">You are not in any groups yet. Create one or join with a code.</p>
-      ) : (
-        <ul className="course-list">
-          {groups.map((group) => (
-            <li key={group.id} className="course">
-              <div>
-                <strong>{group.name}</strong>
-                <div className="muted">
-                  {group.memberCount} {group.memberCount === 1 ? 'member' : 'members'}
-                </div>
-                <div className="code-row">
-                  Invite code: <code>{group.inviteCode}</code>
-                  <button type="button" className="link-button" onClick={() => copyCode(group)}>
-                    {copiedId === group.id ? 'Copied!' : 'Copy'}
-                  </button>
-                </div>
-              </div>
-              <div className="actions">
-                <Link className="button-link" to={`/groups/${group.id}`}>
-                  View free time
-                </Link>
-                <button className="secondary danger" onClick={() => handleLeave(group)}>
-                  Leave
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
     </>
   )
 }

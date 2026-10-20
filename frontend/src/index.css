@@ -846,3 +846,87 @@ button:active:not(:disabled),
     transition: none !important;
   }
 }
+/* Two-column pages and loading states */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.split > .card,
+.split > .side-stack {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.empty {
+  margin: 0;
+  padding: 1.5rem;
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.skeleton {
+  display: block;
+  border-radius: 4px;
+  background: var(--line);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-title {
+  width: 55%;
+  height: 1.4rem;
+}
+
+.skeleton-line {
+  width: 30%;
+  height: 0.9rem;
+  margin-top: 0.6rem;
+}
+
+.day-head .skeleton-line {
+  width: 60%;
+  margin: 0.2rem 0;
+}
+
+.skeleton-lines {
+  flex: 1;
+}
+
+.skeleton-block {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+}
+
+@media (max-width: 760px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .split > .card,
+  .split > .side-stack {
+    position: static;
+  }
+}

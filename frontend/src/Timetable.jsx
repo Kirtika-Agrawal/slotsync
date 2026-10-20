@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from './api.js'
 import WeekGrid from './WeekGrid.jsx'
+import { GridSkeleton } from './Skeleton.jsx'
 
 const MIN_OPTIONS = [30, 45, 60, 90, 120]
 
@@ -71,7 +72,7 @@ export default function Timetable() {
         </p>
       )}
 
-      {loading && days.length === 0 && <p className="muted">Loading...</p>}
+      {loading && days.length === 0 && <GridSkeleton />}
 
       {!loading && !error && days.length > 0 && !hasClasses && (
         <p className="muted">

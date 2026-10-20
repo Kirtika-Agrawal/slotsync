@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from './api.js'
+import { ListSkeleton } from './Skeleton.jsx'
 
 // The backend returns one row per slot, so we group rows into one card per course
 function groupByCourse(rows) {
@@ -96,15 +97,17 @@ export default function Courses() {
     await loadCourses()
   }
 
-  return (
+    return (
     <>
       <h1>My courses</h1>
       <p className="muted">
         Add each course with its slots as shown on VTOP, for example A1+TA1 or L21+L22.
       </p>
 
-      <form className="card wide" onSubmit={handleAdd}>
-        <div className="row">
+      <div className="split">
+        <form className="card" onSubmit={handleAdd}>
+          <h2>Add a course</h2>
+
           <label>
             Course code
             <input
@@ -115,6 +118,7 @@ export default function Courses() {
               required
             />
           </label>
+
           <label>
             Course title
             <input
@@ -125,6 +129,7 @@ export default function Courses() {
               required
             />
           </label>
+
           <label>
             Slots
             <input
@@ -134,51 +139,53 @@ export default function Courses() {
               required
             />
           </label>
-        </div>
 
-        {formError && (
-          <p className="error" role="alert">
-            {formError}
-          </p>
-        )}
+          {formError && (
+            <p className="error" role="alert">
+              {formError}
+            </p>
+          )}
 
-        <button type="submit" disabled={saving}>
-          {saving ? 'Adding...' : 'Add course'}
-        </button>
-      </form>
+          <button type="submit" disabled={saving}>
+            {saving ? 'Adding...' : 'Add course'}
+          </button>
+        </form>
 
-      {listError && (
-        <p className="error" role="alert">
-          {listError}
-        </p>
-      )}
+        <section aria-label="Your courses">
+          {listError && (
+            <p className="error" role="alert">
+              {listError}
+            </p>
+          )}
 
-      {loading ? (
-        <p className="muted">Loading...</p>
-      ) : courses.length === 0 ? (
-        <p className="muted">No courses yet. Add your first one above.</p>
-      ) : (
-        <ul className="course-list">
-          {courses.map((course) => (
-            <li key={course.code} className="course">
-              <div>
-                <strong>{course.title}</strong>
-                <div className="muted">{course.code}</div>
-                <div className="chips">
-                  {course.slots.map((slot) => (
-                    <span key={slot} className="chip">
-                      {slot}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <button className="secondary danger" onClick={() => handleRemove(course)}>
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+          {loading ? (
+            <ListSkeleton />
+          ) : courses.length === 0 ? (
+            <p className="empty">No courses yet. Add your first one using the form.</p>
+          ) : (
+            <ul className="course-list">
+              {courses.map((course) => (
+                <li key={course.code} className="course">
+                  <div>
+                    <strong>{course.title}</strong>
+                    <div className="muted">{course.code}</div>
+                    <div className="chips">
+                      {course.slots.map((slot) => (
+                        <span key={slot} className="chip">
+                          {slot}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <button className="secondary danger" onClick={() => handleRemove(course)}>
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
     </>
   )
 }

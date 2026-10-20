@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { api } from './api.js'
 import { formatDay, formatTime, toMinutes } from './format.js'
 import WeekGrid from './WeekGrid.jsx'
+import { GridSkeleton } from './Skeleton.jsx'
 
 const MIN_OPTIONS = [30, 45, 60, 90, 120]
 
@@ -74,7 +75,7 @@ export default function GroupDetail() {
       )}
 
       {loading && !data ? (
-        <p className="muted">Loading...</p>
+        <GridSkeleton />
       ) : (
         data && (
           <>
