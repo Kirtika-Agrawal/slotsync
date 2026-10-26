@@ -1,0 +1,9 @@
+.git
+.idea
+target
+frontend
+docs
+scripts
+HELP.md
+README.md
+src/main/resources/application-local.properties
